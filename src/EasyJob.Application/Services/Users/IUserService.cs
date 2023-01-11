@@ -1,12 +1,13 @@
-﻿using EasyJob.Domain.Entities.Users;
+﻿using EasyJob.Application.DataTransferObjects;
+using EasyJob.Domain.Entities.Users;
 
 namespace EasyJob.Application.Services.Users;
 
 public interface IUserService
 {
-    ValueTask<User> CreateUserAsync(User user);
-    IQueryable<User> RetrieveUsers();
-    ValueTask<User> RetrieveUserByIdAsync(Guid userId);
-    ValueTask<User> ModifyUserAsync(User user);
-    ValueTask<User> RemoveUserAsync(Guid user);
+    ValueTask<UserDto> CreateUserAsync(UserForCreationDto userForCreationDto);
+    IQueryable<UserDto> RetrieveUsers();
+    ValueTask<UserDto> RetrieveUserByIdAsync(Guid userId);
+    ValueTask<UserDto> ModifyUserAsync(User user);
+    ValueTask<UserDto> RemoveUserAsync(Guid user);
 }

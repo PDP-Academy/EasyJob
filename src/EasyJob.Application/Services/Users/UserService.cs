@@ -1,4 +1,5 @@
-﻿using EasyJob.Domain.Entities.Users;
+﻿using EasyJob.Application.DataTransferObjects;
+using EasyJob.Domain.Entities.Users;
 using EasyJob.Infrastructure.Repositories.Users;
 
 namespace EasyJob.Application.Services.Users;
@@ -6,38 +7,51 @@ namespace EasyJob.Application.Services.Users;
 public class UserService : IUserService
 {
     private readonly IUserRepository userRepository;
+    private readonly IUserFactory userFactory;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(
+        IUserRepository userRepository,
+        IUserFactory userFactory)
     {
         this.userRepository = userRepository;
+        this.userFactory = userFactory;
     }
 
-    public async ValueTask<User> CreateUserAsync(User user)
+    public async ValueTask<UserDto> CreateUserAsync(UserForCreationDto userForCreationDto)
     {
+        var newUser = this.userFactory.MapToUser(userForCreationDto);
+
         var addedUser = await this.userRepository
-            .InsertAsync(user);
+            .InsertAsync(newUser);
 
-        return addedUser;
+        return this.userFactory.MapToUserDto(addedUser);
     }
 
-    public IQueryable<User> RetrieveUsers() =>
-        this.userRepository.SelectAll();
-
-    public async ValueTask<User> RetrieveUserByIdAsync(Guid userId)
+    public IQueryable<UserDto> RetrieveUsers()
     {
-        return await this.userRepository
-            .SelectByIdAsync(userId);
+        var users = this.userRepository.SelectAll();
+
+        return users.Select(user =>
+            this.userFactory.MapToUserDto(user));
     }
 
-    public async ValueTask<User> ModifyUserAsync(User user)
+    public async ValueTask<UserDto> RetrieveUserByIdAsync(Guid userId)
+    {
+        var storageUser = await this.userRepository
+            .SelectByIdAsync(userId);
+
+        return this.userFactory.MapToUserDto(storageUser);
+    }
+
+    public async ValueTask<UserDto> ModifyUserAsync(User user)
     {
         var modifiedUser = await this.userRepository
             .UpdateAsync(user);
 
-        return modifiedUser;
+        return this.userFactory.MapToUserDto(modifiedUser);
     }
 
-    public async ValueTask<User> RemoveUserAsync(Guid userId)
+    public async ValueTask<UserDto> RemoveUserAsync(Guid userId)
     {
         var user = await this.userRepository
             .SelectByIdAsync(userId);
@@ -45,6 +59,6 @@ public class UserService : IUserService
         var removedUser = await this.userRepository
             .DeleteAsync(user);
 
-        return removedUser;
+        return this.userFactory.MapToUserDto(removedUser);
     }
 }

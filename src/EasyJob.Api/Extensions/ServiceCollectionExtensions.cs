@@ -27,6 +27,7 @@ namespace EasyJob.Api.Extensions
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();
+            services.AddSingleton<IUserFactory, UserFactory>();
 
             return services;
         }
