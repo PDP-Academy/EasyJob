@@ -9,15 +9,12 @@ public class UserService : IUserService
     private readonly IUserRepository userRepository;
     private readonly IUserFactory userFactory;
 
-    public UserService(
-        IUserRepository userRepository,
-        IUserFactory userFactory)
+    public UserService(IUserRepository userRepository)
     {
         this.userRepository = userRepository;
-        this.userFactory = userFactory;
     }
 
-    public async ValueTask<UserDto> CreateUserAsync(UserForCreationDto userForCreationDto)
+    public async ValueTask<User> CreateUserAsync(User user)
     {
         var newUser = this.userFactory.MapToUser(userForCreationDto);
 
@@ -35,12 +32,10 @@ public class UserService : IUserService
             this.userFactory.MapToUserDto(user));
     }
 
-    public async ValueTask<UserDto> RetrieveUserByIdAsync(Guid userId)
+    public async ValueTask<User> RetrieveUserByIdAsync(Guid userId)
     {
-        var storageUser = await this.userRepository
+        return await this.userRepository
             .SelectByIdAsync(userId);
-
-        return this.userFactory.MapToUserDto(storageUser);
     }
 
     public async ValueTask<UserDto> ModifyUserAsync(User user)

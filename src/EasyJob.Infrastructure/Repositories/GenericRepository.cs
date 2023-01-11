@@ -8,10 +8,8 @@ public abstract class GenericRepository<TEntity, TKey> : IGenericRepository<TEnt
 {
     private readonly AppDbContext appDbContext;
 
-    public GenericRepository(AppDbContext appDbContext)
-    {
+    public GenericRepository(AppDbContext appDbContext)=>
         this.appDbContext = appDbContext;
-    }
 
     public async ValueTask<TEntity> InsertAsync(
         TEntity entity)
@@ -51,10 +49,8 @@ public abstract class GenericRepository<TEntity, TKey> : IGenericRepository<TEnt
         return entityEntry.Entity;
     }
 
-
-    public async ValueTask<int> SaveChangesAsync()
-    {
-        return await this.appDbContext
+    public async ValueTask<int> SaveChangesAsync()=>    
+        await this.appDbContext
             .SaveChangesAsync();
-    }
+    
 }
