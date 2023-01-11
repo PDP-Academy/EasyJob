@@ -7,11 +7,9 @@ public class UserService : IUserService
 {
     private readonly IUserRepository userRepository;
 
-    public UserService(IUserRepository userRepository)
-    {
+    public UserService(IUserRepository userRepository)=>
         this.userRepository = userRepository;
-    }
-
+    
     public async ValueTask<User> CreateUserAsync(User user)
     {
         var addedUser = await this.userRepository
@@ -23,11 +21,9 @@ public class UserService : IUserService
     public IQueryable<User> RetrieveUsers() =>
         this.userRepository.SelectAll();
 
-    public async ValueTask<User> RetrieveUserByIdAsync(Guid userId)
-    {
-        return await this.userRepository
-            .SelectByIdAsync(userId);
-    }
+    public async ValueTask<User> RetrieveUserByIdAsync(Guid userId)=>  
+         await this.userRepository
+            .SelectByIdAsync(userId);    
 
     public async ValueTask<User> ModifyUserAsync(User user)
     {
