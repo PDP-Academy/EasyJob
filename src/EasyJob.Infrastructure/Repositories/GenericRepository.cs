@@ -1,5 +1,6 @@
 ﻿using EasyJob.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace EasyJob.Infrastructure.Repositories;
 
@@ -28,6 +29,20 @@ public abstract class GenericRepository<TEntity, TKey> : IGenericRepository<TEnt
     public async ValueTask<TEntity> SelectByIdAsync(TKey id) =>
         await this.appDbContext.Set<TEntity>().FindAsync(id);
 
+    public async ValueTask<TEntity> SelectByIdWithDetailsAsync(
+        Expression<Func<TEntity, bool>> expression,
+        string[] includes = null)
+    {
+        IQueryable<TEntity> entities = this.SelectAll();
+
+        foreach(var include in includes)
+        {
+            entities = entities.Include(include);
+        }
+
+        return await entities.FirstOrDefaultAsync(expression);
+    }
+
     public async ValueTask<TEntity> UpdateAsync(TEntity entity)
     {
         var entityEntry = this.appDbContext
@@ -52,5 +67,4 @@ public abstract class GenericRepository<TEntity, TKey> : IGenericRepository<TEnt
     public async ValueTask<int> SaveChangesAsync()=>    
         await this.appDbContext
             .SaveChangesAsync();
-    
 }
