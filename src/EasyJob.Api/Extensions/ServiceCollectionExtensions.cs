@@ -1,6 +1,8 @@
 ﻿using EasyJob.Application.Services.Users;
+using EasyJob.Application.Validator;
 using EasyJob.Infrastructure.Contexts;
 using EasyJob.Infrastructure.Repositories.Users;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace EasyJob.Api.Extensions
@@ -28,6 +30,8 @@ namespace EasyJob.Api.Extensions
         {
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IUserFactory, UserFactory>();
+
+            services.AddValidatorsFromAssemblyContaining<UserForCreationDtoValidator>();
 
             return services;
         }

@@ -1,5 +1,6 @@
 ﻿using EasyJob.Application.DataTransferObjects;
 using EasyJob.Application.Services.Users;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyJob.Api.Controllers
@@ -9,16 +10,33 @@ namespace EasyJob.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService userService;
+        private readonly IValidator<UserForCreationDto> userForCreationDtoValidator;
 
-        public UsersController(IUserService userService)
+        public UsersController(
+            IUserService userService,
+            IValidator<UserForCreationDto> userForCreationDtoValidator)
         {
             this.userService = userService;
+            this.userForCreationDtoValidator = userForCreationDtoValidator;
         }
 
         [HttpPost]
         public async ValueTask<ActionResult<UserDto>> PostUserAsync(
             UserForCreationDto userForCreationDto)
         {
+            var result = await this.userForCreationDtoValidator
+                .ValidateAsync(userForCreationDto);
+
+            if(!result.IsValid)
+            {
+                foreach(var error in result.Errors)
+                {
+                    ModelState.AddModelError(error.ErrorCode, error.ErrorMessage);
+                }
+                
+                return BadRequest(ModelState);
+            }
+
             var createdUser = await this.userService
                 .CreateUserAsync(userForCreationDto);
 
