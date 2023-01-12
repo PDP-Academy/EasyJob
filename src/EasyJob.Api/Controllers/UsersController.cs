@@ -1,5 +1,5 @@
-﻿using EasyJob.Application.Services.Users;
-using EasyJob.Domain.Entities.Users;
+﻿using EasyJob.Application.DataTransferObjects;
+using EasyJob.Application.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyJob.Api.Controllers
@@ -16,11 +16,11 @@ namespace EasyJob.Api.Controllers
         }
 
         [HttpPost]
-        public async ValueTask<ActionResult<User>> PostUserAsync(
-            User user)
+        public async ValueTask<ActionResult<UserDto>> PostUserAsync(
+            UserForCreationDto userForCreationDto)
         {
             var createdUser = await this.userService
-                .CreateUserAsync(user);
+                .CreateUserAsync(userForCreationDto);
 
             return Created("", createdUser);
         }
@@ -35,7 +35,7 @@ namespace EasyJob.Api.Controllers
         }
 
         [HttpGet("{userId:guid}")]
-        public async ValueTask<ActionResult<User>> GetUserByIdAsync(
+        public async ValueTask<ActionResult<UserDto>> GetUserByIdAsync(
             Guid userId)
         {
             var user = await this.userService
@@ -45,17 +45,17 @@ namespace EasyJob.Api.Controllers
         }
 
         [HttpPut]
-        public async ValueTask<ActionResult<User>> PutUserAsync(
-            User user)
+        public async ValueTask<ActionResult<UserDto>> PutUserAsync(
+            UserForModificationDto userForModificationDto)
         {
             var modifiedUser = await this.userService
-                .ModifyUserAsync(user);
+                .ModifyUserAsync(userForModificationDto);
 
             return Ok(modifiedUser);
         }
 
         [HttpDelete("{userId:guid}")]
-        public async ValueTask<ActionResult<User>> DeleteUserAsync(
+        public async ValueTask<ActionResult<UserDto>> DeleteUserAsync(
             Guid userId)
         {
             var removed = await this.userService

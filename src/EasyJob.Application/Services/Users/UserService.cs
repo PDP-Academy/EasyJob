@@ -17,7 +17,8 @@ public class UserService : IUserService
         this.userFactory = userFactory;
     }
 
-    public async ValueTask<UserDto> CreateUserAsync(UserForCreationDto userForCreationDto)
+    public async ValueTask<UserDto> CreateUserAsync(
+        UserForCreationDto userForCreationDto)
     {
         var newUser = this.userFactory.MapToUser(userForCreationDto);
 
@@ -38,15 +39,27 @@ public class UserService : IUserService
     public async ValueTask<UserDto> RetrieveUserByIdAsync(Guid userId)
     {
         var storageUser = await this.userRepository
-            .SelectByIdAsync(userId);
+            .SelectByIdWithDetailsAsync(
+                expression: user =>
+                    user.Id == userId,
+                includes: new string[] { nameof(User.Address) });
 
         return this.userFactory.MapToUserDto(storageUser);
     }
 
-    public async ValueTask<UserDto> ModifyUserAsync(User user)
+    public async ValueTask<UserDto> ModifyUserAsync(
+        UserForModificationDto userForModificationDto)
     {
+        var storageUser = await this.userRepository
+            .SelectByIdWithDetailsAsync(
+                expression: user =>
+                    user.Id == userForModificationDto.userId,
+                includes: new string[] { nameof(User.Address) });
+
+        this.userFactory.MapToUser(storageUser, userForModificationDto);
+
         var modifiedUser = await this.userRepository
-            .UpdateAsync(user);
+            .UpdateAsync(storageUser);
 
         return this.userFactory.MapToUserDto(modifiedUser);
     }

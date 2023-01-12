@@ -1,4 +1,5 @@
-﻿using EasyJob.Domain.Enums;
+﻿using EasyJob.Domain.Entities.Users;
+using EasyJob.Domain.Enums;
 
 namespace EasyJob.Application.DataTransferObjects;
 
@@ -8,4 +9,5 @@ public record UserDto(
     string lastName,
     string email,
     string phoneNumber,
-    UserRole role);
+    UserRole role,
+    AddressDto? address);
