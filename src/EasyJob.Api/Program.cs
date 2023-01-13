@@ -1,4 +1,5 @@
 using EasyJob.Api.Extensions;
+using EasyJob.Api.Middlewares;
 
 namespace EasyJob.Api;
 
@@ -28,6 +29,8 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
+
+        app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
         app.MapControllers();
 
