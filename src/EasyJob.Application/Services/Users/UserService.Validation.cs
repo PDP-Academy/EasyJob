@@ -35,7 +35,7 @@ public partial class UserService
         ThrowValidationExceptionIfValidationIsInvalid(validationResult);
     }
 
-    public void ValidateUserForModificationnDto(
+    public void ValidateUserForModificationDto(
         UserForModificationDto userForModificationDto)
     {
         var validationResult = new UserForModificationDtoValidator()

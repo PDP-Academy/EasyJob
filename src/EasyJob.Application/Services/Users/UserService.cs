@@ -64,7 +64,7 @@ public partial class UserService : IUserService
     public async ValueTask<UserDto> ModifyUserAsync(
         UserForModificationDto userForModificationDto)
     {
-        ValidateUserForModificationnDto(userForModificationDto);
+        ValidateUserForModificationDto(userForModificationDto);
 
         var storageUser = await this.userRepository
             .SelectByIdWithDetailsAsync(
