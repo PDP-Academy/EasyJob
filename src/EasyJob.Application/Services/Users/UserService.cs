@@ -1,4 +1,6 @@
 ﻿using EasyJob.Application.DataTransferObjects;
+using EasyJob.Application.Extensions;
+using EasyJob.Application.Models;
 using EasyJob.Domain.Entities.Users;
 using EasyJob.Infrastructure.Repositories.Users;
 
@@ -31,9 +33,14 @@ public partial class UserService : IUserService
         return this.userFactory.MapToUserDto(addedUser);
     }
 
-    public IQueryable<UserDto> RetrieveUsers()
+    public IQueryable<UserDto> RetrieveUsers(
+        QueryParameter queryParameter)
     {
-        var users = this.userRepository.SelectAll();
+        var users = this.userRepository
+            .SelectAll()
+            .ToPagedList(
+                pageSize: queryParameter.Page.Size,
+                pageIndex: queryParameter.Page.Index);
 
         return users.Select(user =>
             this.userFactory.MapToUserDto(user));

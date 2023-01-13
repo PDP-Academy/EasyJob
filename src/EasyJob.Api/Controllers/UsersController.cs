@@ -1,4 +1,5 @@
 ﻿using EasyJob.Application.DataTransferObjects;
+using EasyJob.Application.Models;
 using EasyJob.Application.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,10 +28,11 @@ namespace EasyJob.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetUsers()
+        public IActionResult GetUsers(
+            [FromQuery] QueryParameter queryParameter)
         {
             var users = this.userService
-                .RetrieveUsers();
+                .RetrieveUsers(queryParameter);
 
             return Ok(users);
         }
