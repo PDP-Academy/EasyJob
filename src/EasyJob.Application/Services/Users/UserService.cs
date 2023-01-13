@@ -4,7 +4,7 @@ using EasyJob.Infrastructure.Repositories.Users;
 
 namespace EasyJob.Application.Services.Users;
 
-public class UserService : IUserService
+public partial class UserService : IUserService
 {
     private readonly IUserRepository userRepository;
     private readonly IUserFactory userFactory;
@@ -20,7 +20,10 @@ public class UserService : IUserService
     public async ValueTask<UserDto> CreateUserAsync(
         UserForCreationDto userForCreationDto)
     {
-        var newUser = this.userFactory.MapToUser(userForCreationDto);
+        ValidateUserForCreationDto(userForCreationDto);
+
+        var newUser = this.userFactory
+            .MapToUser(userForCreationDto);
 
         var addedUser = await this.userRepository
             .InsertAsync(newUser);
@@ -38,11 +41,15 @@ public class UserService : IUserService
 
     public async ValueTask<UserDto> RetrieveUserByIdAsync(Guid userId)
     {
+        ValidateUserId(userId);
+
         var storageUser = await this.userRepository
             .SelectByIdWithDetailsAsync(
                 expression: user =>
                     user.Id == userId,
                 includes: new string[] { nameof(User.Address) });
+
+        ValidateStorageUser(storageUser, userId);
 
         return this.userFactory.MapToUserDto(storageUser);
     }
@@ -50,11 +57,15 @@ public class UserService : IUserService
     public async ValueTask<UserDto> ModifyUserAsync(
         UserForModificationDto userForModificationDto)
     {
+        ValidateUserForModificationnDto(userForModificationDto);
+
         var storageUser = await this.userRepository
             .SelectByIdWithDetailsAsync(
                 expression: user =>
                     user.Id == userForModificationDto.userId,
                 includes: new string[] { nameof(User.Address) });
+
+        ValidateStorageUser(storageUser, userForModificationDto.userId);
 
         this.userFactory.MapToUser(storageUser, userForModificationDto);
 
@@ -66,11 +77,15 @@ public class UserService : IUserService
 
     public async ValueTask<UserDto> RemoveUserAsync(Guid userId)
     {
-        var user = await this.userRepository
+        ValidateUserId(userId);
+
+        var storageUser = await this.userRepository
             .SelectByIdAsync(userId);
 
+        ValidateStorageUser(storageUser, userId);
+
         var removedUser = await this.userRepository
-            .DeleteAsync(user);
+            .DeleteAsync(storageUser);
 
         return this.userFactory.MapToUserDto(removedUser);
     }

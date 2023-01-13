@@ -16,7 +16,7 @@ public class UserForCreationDtoValidator : AbstractValidator<UserForCreationDto>
 
 		RuleFor(user => user.email)
 			.MaximumLength(100)
-			.EmailAddress().WithMessage("Email noto'g'ri")
+			.EmailAddress()
             .NotEmpty();
     }
 }
