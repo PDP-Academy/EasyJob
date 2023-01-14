@@ -9,5 +9,5 @@ public interface IUserService
     IQueryable<UserDto> RetrieveUsers(QueryParameter queryParameter);
     ValueTask<UserDto> RetrieveUserByIdAsync(Guid userId);
     ValueTask<UserDto> ModifyUserAsync(UserForModificationDto userForModificationDto);
-    ValueTask<UserDto> RemoveUserAsync(Guid user);
+    ValueTask<UserDto> RemoveUserAsync(Guid userId);
 }
