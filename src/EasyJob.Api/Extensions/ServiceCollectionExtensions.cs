@@ -17,10 +17,11 @@ namespace EasyJob.Api.Extensions
 
             services.AddDbContextPool<AppDbContext>(options =>
             {
-                options.UseSqlServer(connectionString, sqlServerOptions =>
+                options.UseInMemoryDatabase("EasyJob");
+                /*options.UseSqlServer(connectionString, sqlServerOptions =>
                 {
                     sqlServerOptions.EnableRetryOnFailure();
-                });
+                });*/
             });
 
             return services;
@@ -32,6 +33,8 @@ namespace EasyJob.Api.Extensions
             services.AddSingleton<IUserFactory, UserFactory>();
 
             services.AddValidatorsFromAssemblyContaining<UserForCreationDtoValidator>();
+
+            services.AddHttpContextAccessor();
 
             return services;
         }
