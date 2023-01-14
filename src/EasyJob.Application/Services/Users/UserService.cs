@@ -3,6 +3,7 @@ using EasyJob.Application.Extensions;
 using EasyJob.Application.Models;
 using EasyJob.Domain.Entities.Users;
 using EasyJob.Infrastructure.Repositories.Users;
+using Microsoft.AspNetCore.Http;
 
 namespace EasyJob.Application.Services.Users;
 
@@ -10,13 +11,16 @@ public partial class UserService : IUserService
 {
     private readonly IUserRepository userRepository;
     private readonly IUserFactory userFactory;
+    private readonly IHttpContextAccessor httpContextAccessor;
 
     public UserService(
         IUserRepository userRepository,
-        IUserFactory userFactory)
+        IUserFactory userFactory,
+        IHttpContextAccessor httpContextAccessor)
     {
         this.userRepository = userRepository;
         this.userFactory = userFactory;
+        this.httpContextAccessor = httpContextAccessor;
     }
 
     public async ValueTask<UserDto> CreateUserAsync(
@@ -39,6 +43,7 @@ public partial class UserService : IUserService
         var users = this.userRepository
             .SelectAll()
             .ToPagedList(
+                httpContext: this.httpContextAccessor.HttpContext,
                 pageSize: queryParameter.Page.Size,
                 pageIndex: queryParameter.Page.Index);
 
