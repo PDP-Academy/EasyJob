@@ -1,5 +1,6 @@
 ﻿using EasyJob.Application.DataTransferObjects;
 using EasyJob.Domain.Entities.Users;
+using EasyJob.Domain.Enums;
 
 namespace EasyJob.Application.Services.Users;
 
@@ -22,7 +23,8 @@ public class UserFactory : IUserFactory
                 PostalCode = userForCreationDto.postalCode,
             },
             PasswordHash = userForCreationDto.password,
-            Salt = Guid.NewGuid().ToString()
+            Salt = Guid.NewGuid().ToString(),
+            Role = UserRole.Candidate
         };
     }
 

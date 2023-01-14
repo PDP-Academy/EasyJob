@@ -11,6 +11,7 @@ public class Program
 
         builder.Services
             .AddDbContexts(builder.Configuration)
+            .AddAuthentication(builder.Configuration)
             .AddInfrastructure()
             .AddApplication();
 
@@ -27,6 +28,8 @@ public class Program
         }
 
         app.UseHttpsRedirection();
+
+        app.UseAuthentication();
 
         app.UseAuthorization();
 
