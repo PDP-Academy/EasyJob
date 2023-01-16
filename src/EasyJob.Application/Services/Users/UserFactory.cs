@@ -1,20 +1,31 @@
 ﻿using EasyJob.Application.DataTransferObjects;
 using EasyJob.Domain.Entities.Users;
 using EasyJob.Domain.Enums;
+using EasyJob.Infrastructure.Authentication;
 
 namespace EasyJob.Application.Services.Users;
 
 public class UserFactory : IUserFactory
 {
+    private readonly IPasswordHasher passwordHasher;
+
+    public UserFactory(IPasswordHasher passwordHasher)
+    {
+        this.passwordHasher = passwordHasher;
+    }
+
     public User MapToUser(
         UserForCreationDto userForCreationDto)
     {
+        string randomSalt = Guid.NewGuid().ToString();
+
         return new User
         {
             FirstName = userForCreationDto.firstName,
             LastName = userForCreationDto.lastName,
             Email = userForCreationDto.email,
             PhoneNumber = userForCreationDto.phoneNumber,
+            
             Address = new Address
             {
                 Street = userForCreationDto.street,
@@ -22,8 +33,13 @@ public class UserFactory : IUserFactory
                 Region = userForCreationDto.region,
                 PostalCode = userForCreationDto.postalCode,
             },
-            PasswordHash = userForCreationDto.password,
-            Salt = Guid.NewGuid().ToString(),
+            
+            Salt = randomSalt,
+
+            PasswordHash = this.passwordHasher.Encrypt(
+                password: userForCreationDto.password,
+                salt: randomSalt),
+            
             Role = UserRole.Candidate
         };
     }

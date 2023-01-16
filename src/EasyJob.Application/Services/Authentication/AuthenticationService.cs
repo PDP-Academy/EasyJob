@@ -1,5 +1,5 @@
 ﻿using EasyJob.Application.DataTransferObjects;
-using EasyJob.Domain.Entities.Users;
+using EasyJob.Domain.Exceptions;
 using EasyJob.Infrastructure.Authentication;
 using EasyJob.Infrastructure.Repositories.Users;
 using System.IdentityModel.Tokens.Jwt;
@@ -10,22 +10,37 @@ public class AuthenticationService : IAuthenticationService
 {
     private readonly IUserRepository userRepository;
     private readonly IJwtTokenHandler jwtTokenHandler;
+    private readonly IPasswordHasher passwordHasher;
 
     public AuthenticationService(
         IUserRepository userRepository,
-        IJwtTokenHandler jwtTokenHandler)
+        IJwtTokenHandler jwtTokenHandler,
+        IPasswordHasher passwordHasher)
     {
         this.userRepository = userRepository;
         this.jwtTokenHandler = jwtTokenHandler;
+        this.passwordHasher = passwordHasher;
     }
 
     public async Task<TokenDto> LoginAsync(AuthenticationDto authenticationDto)
     {
         var user = await this.userRepository
             .SelectByIdWithDetailsAsync(
-                expression: user => user.Email == authenticationDto.userName &&
-                    user.PasswordHash == authenticationDto.password,
+                expression: user => user.Email == authenticationDto.email,
                 includes: Array.Empty<string>());
+
+        if(user is null)
+        {
+            throw new NotFoundException("User with given credentials not found");
+        }
+
+        if(!this.passwordHasher.Verify(
+            hash: user.PasswordHash,
+            password: authenticationDto.password,
+            salt: user.Salt))
+        {
+            throw new ValidationException("Username or password is not valid");
+        }
 
         var token = this.jwtTokenHandler
             .GenerateJwtToken(user);

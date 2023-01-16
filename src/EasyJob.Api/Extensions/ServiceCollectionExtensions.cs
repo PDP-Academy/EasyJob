@@ -56,6 +56,7 @@ namespace EasyJob.Api.Extensions
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddTransient<IJwtTokenHandler, JwtTokenHandler>();
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
             return services;
         }
 
