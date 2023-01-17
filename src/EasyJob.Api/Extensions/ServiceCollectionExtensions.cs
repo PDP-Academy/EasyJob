@@ -28,11 +28,10 @@ namespace EasyJob.Api.Extensions
 
             services.AddDbContextPool<AppDbContext>(options =>
             {
-                options.UseInMemoryDatabase("EasyJob");
-                /*options.UseSqlServer(connectionString, sqlServerOptions =>
+                options.UseSqlServer(connectionString, sqlServerOptions =>
                 {
                     sqlServerOptions.EnableRetryOnFailure();
-                });*/
+                });
             });
 
             return services;

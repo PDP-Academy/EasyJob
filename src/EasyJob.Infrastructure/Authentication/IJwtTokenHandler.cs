@@ -5,5 +5,6 @@ namespace EasyJob.Infrastructure.Authentication;
 
 public interface IJwtTokenHandler
 {
-    JwtSecurityToken GenerateJwtToken(User user);
+    JwtSecurityToken GenerateAccessToken(User user);
+    string GenerateRefreshToken();
 }

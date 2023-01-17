@@ -25,4 +25,14 @@ public class AuthenticationController : ControllerBase
 
         return Ok(tokenDto);
     }
+
+    [HttpPost("refresh-token")]
+    public async ValueTask<ActionResult<TokenDto>> RefreshTokenAsync(
+        RefreshTokenDto refreshTokenDto)
+    {
+        var tokenDto = await this.authenticationService
+            .RefreshTokenAsync(refreshTokenDto);
+
+        return Ok(tokenDto);
+    }
 }

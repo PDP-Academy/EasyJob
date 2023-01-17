@@ -1,5 +1,6 @@
 using EasyJob.Api.Extensions;
 using EasyJob.Api.Middlewares;
+using EasyJob.Infrastructure.Authentication;
 
 namespace EasyJob.Api;
 

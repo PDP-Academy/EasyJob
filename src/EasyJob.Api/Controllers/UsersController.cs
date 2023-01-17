@@ -29,7 +29,7 @@ namespace EasyJob.Api.Controllers
             return Created("", createdUser);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpGet]
         public IActionResult GetUsers(
             [FromQuery] QueryParameter queryParameter)

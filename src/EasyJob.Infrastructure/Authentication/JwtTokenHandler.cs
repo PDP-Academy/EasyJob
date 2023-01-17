@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace EasyJob.Infrastructure.Authentication;
@@ -17,7 +18,7 @@ public class JwtTokenHandler : IJwtTokenHandler
         this.jwtOption = options.Value;
     }
 
-    public JwtSecurityToken GenerateJwtToken(User user)
+    public JwtSecurityToken GenerateAccessToken(User user)
     {
         var claims = new List<Claim>()
         {
@@ -40,5 +41,16 @@ public class JwtTokenHandler : IJwtTokenHandler
             );
 
         return token;
+    }
+
+    public string GenerateRefreshToken()
+    {
+        byte[] bytes = new byte[64];
+
+        using var randomGenerator =
+            RandomNumberGenerator.Create();
+
+        randomGenerator.GetBytes(bytes);
+        return Convert.ToBase64String(bytes);
     }
 }
