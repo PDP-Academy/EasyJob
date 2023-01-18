@@ -79,15 +79,7 @@ public class AuthenticationService : IAuthenticationService
         var storageUser = await this.userRepository
             .SelectByIdAsync(Guid.Parse(userId));
 
-        if(!storageUser.RefreshToken.Equals(refreshTokenDto.refreshToken))
-        {
-            throw new ValidationException("Refresh token is not valid");
-        }
-
-        if(storageUser.RefreshTokenExpireDate <= DateTime.UtcNow)
-        {
-            throw new ValidationException("Refresh token has already been expired");
-        }
+        ValidateRefreshToken(storageUser, refreshTokenDto);
 
         var newAccessToken = this.jwtTokenHandler
             .GenerateAccessToken(storageUser);
@@ -132,5 +124,17 @@ public class AuthenticationService : IAuthenticationService
         }
 
         return principal;
+    }
+    private void ValidateRefreshToken(User storageUser, RefreshTokenDto refreshTokenDto)
+    {
+        if (!storageUser.RefreshToken.Equals(refreshTokenDto.refreshToken))
+        {
+            throw new ValidationException("Refresh token is not valid");
+        }
+
+        if (storageUser.RefreshTokenExpireDate <= DateTime.UtcNow)
+        {
+            throw new ValidationException("Refresh token has already been expired");
+        }
     }
 }
