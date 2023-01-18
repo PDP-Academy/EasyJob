@@ -1,6 +1,7 @@
 ﻿using EasyJob.Application.Services.Authentication;
 using EasyJob.Application.Services.Users;
 using EasyJob.Application.Validator;
+using EasyJob.Domain.Enums;
 using EasyJob.Infrastructure.Authentication;
 using EasyJob.Infrastructure.Contexts;
 using EasyJob.Infrastructure.Repositories.Users;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Text;
 
 namespace EasyJob.Api.Extensions
@@ -63,6 +65,14 @@ namespace EasyJob.Api.Extensions
             this IServiceCollection services,
             IConfiguration configuration)
         {
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("UserPolicy", options =>
+                {
+                    options.RequireRole(UserRole.Admin.ToString(), UserRole.Candidate.ToString());
+                });
+            });
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -116,6 +126,21 @@ namespace EasyJob.Api.Extensions
                 }
             });
             });
+        }
+
+        public static WebApplicationBuilder AddLogging(
+            this WebApplicationBuilder builder,
+            IConfiguration configuration)
+        {
+            var logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .Enrich.FromLogContext()
+                .CreateLogger();
+
+            builder.Logging.ClearProviders();
+            builder.Logging.AddSerilog(logger);
+
+            return builder;
         }
     }
 }

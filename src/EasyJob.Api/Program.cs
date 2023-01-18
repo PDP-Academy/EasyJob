@@ -1,6 +1,7 @@
 using EasyJob.Api.Extensions;
 using EasyJob.Api.Middlewares;
-using EasyJob.Infrastructure.Authentication;
+using Serilog;
+using Serilog.Sinks.File;
 
 namespace EasyJob.Api;
 
@@ -8,7 +9,10 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
+        var builder = WebApplication
+            .CreateBuilder(args);
+
+        builder.AddLogging(builder.Configuration);
 
         builder.Services
             .AddDbContexts(builder.Configuration)
@@ -17,6 +21,7 @@ public class Program
             .AddApplication();
 
         builder.Services.AddControllers();
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 

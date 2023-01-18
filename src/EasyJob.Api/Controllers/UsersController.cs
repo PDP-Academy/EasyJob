@@ -1,7 +1,6 @@
 ﻿using EasyJob.Application.DataTransferObjects;
 using EasyJob.Application.Models;
 using EasyJob.Application.Services.Users;
-using EasyJob.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,6 +18,7 @@ namespace EasyJob.Api.Controllers
             this.userService = userService;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async ValueTask<ActionResult<UserDto>> PostUserAsync(
             UserForCreationDto userForCreationDto)
@@ -29,7 +29,7 @@ namespace EasyJob.Api.Controllers
             return Created("", createdUser);
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetUsers(
             [FromQuery] QueryParameter queryParameter)
