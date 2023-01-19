@@ -1,5 +1,5 @@
 ﻿using EasyJob.Domain.Exceptions;
-using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
 
@@ -13,7 +13,10 @@ public class GlobalExceptionHandlingMiddleware
     {
         _next = next;
     }
-    public async Task InvokeAsync(HttpContext httpContext)
+
+    public async Task InvokeAsync(
+        HttpContext httpContext,
+        [FromServices]ILogger<GlobalExceptionHandlingMiddleware> logger)
     {
         try
         {
@@ -22,6 +25,8 @@ public class GlobalExceptionHandlingMiddleware
         catch(ValidationException validationException)
         {
             httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+
+            logger.LogError(validationException, validationException.Message);
 
             await HandleExceptionAsync(httpContext, validationException.Message);
         }
@@ -34,14 +39,21 @@ public class GlobalExceptionHandlingMiddleware
                 notFoundException.Message
             });
 
+            logger.LogError(notFoundException, notFoundException.Message);
+
             await HandleExceptionAsync(httpContext, serializedObject);
         }
-        catch (Exception ex)
+        catch (Exception exception)
         {
-            await HandleExceptionAsync(httpContext, ex.Message);
+            logger.LogError(exception, exception.Message);
+            
+            await HandleExceptionAsync(httpContext, exception.Message);
         }
     }
-    private async Task HandleExceptionAsync(HttpContext context, string message)
+
+    private async Task HandleExceptionAsync(
+        HttpContext context,
+        string message)
     {
         context.Response.ContentType = "application/json";
 

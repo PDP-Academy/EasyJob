@@ -1,5 +1,4 @@
 ﻿using EasyJob.Application.DataTransferObjects;
-using EasyJob.Domain.Entities.Users;
 using EasyJob.Domain.Exceptions;
 using EasyJob.Infrastructure.Authentication;
 using EasyJob.Infrastructure.Repositories.Users;
