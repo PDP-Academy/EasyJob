@@ -2,6 +2,7 @@
 using EasyJob.Application.Extensions;
 using EasyJob.Application.Models;
 using EasyJob.Domain.Entities.Users;
+using EasyJob.Domain.Enums;
 using EasyJob.Infrastructure.Repositories.Users;
 using Microsoft.AspNetCore.Http;
 
@@ -47,8 +48,7 @@ public partial class UserService : IUserService
                 pageSize: queryParameter.Page.Size,
                 pageIndex: queryParameter.Page.Index);
 
-        return users.Select(user =>
-            this.userFactory.MapToUserDto(user));
+        return users.Select(user => MapToUserDto(user));
     }
 
     public async ValueTask<UserDto> RetrieveUserByIdAsync(Guid userId)
@@ -63,7 +63,7 @@ public partial class UserService : IUserService
 
         ValidateStorageUser(storageUser, userId);
 
-        return this.userFactory.MapToUserDto(storageUser);
+        return this.MapToUserDto(storageUser);
     }
 
     public async ValueTask<UserDto> ModifyUserAsync(
@@ -100,5 +100,28 @@ public partial class UserService : IUserService
             .DeleteAsync(storageUser);
 
         return this.userFactory.MapToUserDto(removedUser);
+    }
+
+    private UserDto MapToUserDto(User user)
+    {
+        AddressDto? addressDto = default;
+
+        if (user.Address is not null)
+        {
+            addressDto = new AddressDto(
+                user.Address.Country,
+                user.Address.Region,
+                user.Address.Street,
+                user.Address.PostalCode);
+        }
+
+        return new UserDto(
+            user.Id,
+            user.FirstName,
+            user.LastName!,
+            user.Email,
+            user.PhoneNumber,
+            user.Role,
+            addressDto);
     }
 }

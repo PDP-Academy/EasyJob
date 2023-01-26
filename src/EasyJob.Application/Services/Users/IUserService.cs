@@ -1,5 +1,6 @@
 ﻿using EasyJob.Application.DataTransferObjects;
 using EasyJob.Application.Models;
+using EasyJob.Domain.Entities.Users;
 
 namespace EasyJob.Application.Services.Users;
 

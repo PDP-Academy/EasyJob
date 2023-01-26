@@ -5,11 +5,13 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyJob.Api", "src\EasyJob.Api\EasyJob.Api.csproj", "{F57C5A30-A27A-4BF3-A9BD-75294C15DB97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyJob.Infrastructure", "src\EasyJob.Infrastructure\EasyJob.Infrastructure.csproj", "{4B5A90C6-1B8D-4FCA-86DA-6288F459291F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyJob.Infrastructure", "src\EasyJob.Infrastructure\EasyJob.Infrastructure.csproj", "{4B5A90C6-1B8D-4FCA-86DA-6288F459291F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyJob.Application", "src\EasyJob.Application\EasyJob.Application.csproj", "{310A4E6B-4594-4901-B67C-E8237115377A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyJob.Application", "src\EasyJob.Application\EasyJob.Application.csproj", "{310A4E6B-4594-4901-B67C-E8237115377A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyJob.Domain", "src\EasyJob.Domain\EasyJob.Domain.csproj", "{551DF83B-3423-443C-BBD1-7973E5EDA071}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyJob.Domain", "src\EasyJob.Domain\EasyJob.Domain.csproj", "{551DF83B-3423-443C-BBD1-7973E5EDA071}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyJob.UnitTests", "test\EasyJob.UnitTests\EasyJob.UnitTests.csproj", "{EE6C7E8C-2EAE-44CB-BA6A-3983DD832469}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{551DF83B-3423-443C-BBD1-7973E5EDA071}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{551DF83B-3423-443C-BBD1-7973E5EDA071}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{551DF83B-3423-443C-BBD1-7973E5EDA071}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE6C7E8C-2EAE-44CB-BA6A-3983DD832469}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE6C7E8C-2EAE-44CB-BA6A-3983DD832469}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE6C7E8C-2EAE-44CB-BA6A-3983DD832469}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE6C7E8C-2EAE-44CB-BA6A-3983DD832469}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
