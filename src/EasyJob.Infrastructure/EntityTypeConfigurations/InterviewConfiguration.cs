@@ -10,7 +10,10 @@ public class InterviewConfiguration : IEntityTypeConfiguration<Interview>
 {
     public void Configure(EntityTypeBuilder<Interview> builder)
     {
-        builder.ToTable(TableName.Interviews)
+        builder
+            .ToTable(TableName.Interviews);
+
+        builder
             .HasKey(interview => interview.Id);
 
         builder
