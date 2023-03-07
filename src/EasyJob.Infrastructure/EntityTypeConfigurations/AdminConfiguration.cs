@@ -8,7 +8,7 @@ public class AdminConfiguration : IEntityTypeConfiguration<Admin>
 {
     public void Configure(EntityTypeBuilder<Admin> builder)
     {
-        builder.ToTable(TableName.Admin);
+        builder.ToTable(TableName.Admins);
 
         builder
             .HasOne(admin => admin.User)
