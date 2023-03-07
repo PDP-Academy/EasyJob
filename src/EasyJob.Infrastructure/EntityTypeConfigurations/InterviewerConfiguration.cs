@@ -10,7 +10,7 @@ public class InterviewerConfiguration : IEntityTypeConfiguration<Interviewer>
 {
     public void Configure(EntityTypeBuilder<Interviewer> builder)
     {
-        builder.ToTable(TableName.Interviewer);
+        builder.ToTable(TableName.Interviewers);
 
         builder
             .Property(interviewer => interviewer.Description)

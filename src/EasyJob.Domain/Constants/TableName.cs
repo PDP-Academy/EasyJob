@@ -4,5 +4,5 @@ public static class TableName
 {
     public static string Users = "Users";
     public static string Addresses = "Addresses";
-    public static string Interviewer = "Interviewers";
+    public static string Interviewers = "Interviewers";
 }
