@@ -9,7 +9,10 @@ public class CondidateConfigurations : IEntityTypeConfiguration<Candidate>
 {
     public void Configure(EntityTypeBuilder<Candidate> builder)
     {
-        builder.ToTable(TableName.Candidates);
+        builder
+            .ToTable(TableName.Candidates);
+
+        builder.HasNoKey();
 
         builder
             .Property(candidate => candidate.ResumeUrl)
