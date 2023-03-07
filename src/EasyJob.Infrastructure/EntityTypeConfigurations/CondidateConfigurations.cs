@@ -9,9 +9,10 @@ public class CondidateConfigurations : IEntityTypeConfiguration<Candidate>
 {
     public void Configure(EntityTypeBuilder<Candidate> builder)
     {
-        builder.ToTable(TableName.Candidate);
+        builder.ToTable(TableName.Candidates);
 
-        builder.Property(candidate => candidate.ResumeUrl)
+        builder
+            .Property(candidate => candidate.ResumeUrl)
             .IsRequired();
 
         builder
@@ -20,7 +21,8 @@ public class CondidateConfigurations : IEntityTypeConfiguration<Candidate>
             .HasForeignKey<Candidate>(candidate => candidate.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany(i => i.Skills)
+        builder
+            .HasMany(candidate => candidate.Skills)
             .WithOne()
             .OnDelete(DeleteBehavior.Cascade);
     }
