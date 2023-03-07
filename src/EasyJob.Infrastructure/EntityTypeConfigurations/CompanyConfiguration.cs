@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EasyJob.Domain.Constants;
+using EasyJob.Domain.Entities.Users;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EasyJob.Infrastructure.EntityTypeConfigurations
 {
-    internal class CompanyConfiguration
+    public class CompanyConfiguration : IEntityTypeConfiguration<Company>
     {
+        public void Configure(EntityTypeBuilder<Company> builder)
+        {
+            builder.ToTable(TableName.Companies);
+
+            builder.HasKey(comp => comp.UserId);
+        }
     }
 }
