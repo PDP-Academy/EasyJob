@@ -19,5 +19,9 @@ public class CondidateConfigurations : IEntityTypeConfiguration<Candidate>
             .WithOne()
             .HasForeignKey<Candidate>(condidate => condidate.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(i => i.Skills)
+            .WithOne()
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
