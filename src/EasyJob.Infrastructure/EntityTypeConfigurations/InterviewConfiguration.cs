@@ -13,34 +13,41 @@ public class InterviewConfiguration : IEntityTypeConfiguration<Interview>
         builder.ToTable(TableName.Interviews)
             .HasKey(interview => interview.Id);
 
-        builder.Property(interview => interview.InterviewUrl)
+        builder
+            .Property(interview => interview.InterviewUrl)
             .IsRequired(true);
 
-        builder.Property(interview => interview.Title)
+        builder
+            .Property(interview => interview.Title)
             .HasMaxLength(50)
             .IsRequired(true);
 
-        builder.Property(interview => interview.StartsAt)
+        builder
+            .Property(interview => interview.StartsAt)
             .IsRequired(true);
         
         builder.Property(interview => interview.EndsAt)
             .IsRequired(true);
         
-        builder.Property(interview => interview.RecordingUrl)
+        builder
+            .Property(interview => interview.RecordingUrl)
             .IsRequired(false);
         
         builder.Property(interview => interview.Feedback)
             .IsRequired(false);
         
-        builder.Property(interview => interview.Score)
+        builder
+            .Property(interview => interview.Score)
             .IsRequired(false);
 
-        builder.HasOne(interview => interview.Candidate)
+        builder
+            .HasOne(interview => interview.Candidate)
             .WithMany()
             .HasForeignKey(interview => interview.CandidateId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.HasOne(interview => interview.Interviewer)
+        builder
+            .HasOne(interview => interview.Interviewer)
             .WithMany()
             .HasForeignKey(interview => interview.InterviewerId)
             .OnDelete(DeleteBehavior.Cascade);
