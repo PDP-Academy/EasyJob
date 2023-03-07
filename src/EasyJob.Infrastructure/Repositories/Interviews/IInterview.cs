@@ -2,5 +2,4 @@
 
 public interface IInterview : IGenericRepository<Interview, Guid>
 {
-
 }
