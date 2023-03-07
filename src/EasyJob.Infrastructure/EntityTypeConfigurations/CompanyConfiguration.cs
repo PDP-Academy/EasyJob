@@ -11,12 +11,13 @@ namespace EasyJob.Infrastructure.EntityTypeConfigurations
         {
             builder.ToTable(TableName.Companies);
 
-            builder.HasKey(comp => comp.UserId);
+            builder.HasNoKey();
 
             builder
-            .HasOne(admin => admin.User)
-            .WithOne()
-            .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(admin => admin.User)
+                .WithOne()
+                .HasForeignKey<Admin>(admin => admin.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
