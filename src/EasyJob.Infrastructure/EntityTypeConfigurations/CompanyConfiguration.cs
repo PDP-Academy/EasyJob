@@ -14,9 +14,9 @@ namespace EasyJob.Infrastructure.EntityTypeConfigurations
             builder.HasNoKey();
 
             builder
-                .HasOne(admin => admin.User)
+                .HasOne(comp => comp.User)
                 .WithOne()
-                .HasForeignKey<Admin>(admin => admin.UserId)
+                .HasForeignKey<Company>(comp => comp.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
