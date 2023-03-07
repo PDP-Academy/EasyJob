@@ -10,6 +10,8 @@ public class AdminConfiguration : IEntityTypeConfiguration<Admin>
     {
         builder.ToTable(TableName.Admins);
 
+        builder.HasNoKey();
+
         builder
             .HasOne(admin => admin.User)
             .WithOne()
